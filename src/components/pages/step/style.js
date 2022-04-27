@@ -244,7 +244,129 @@ outline: none;
     margin : 9px auto;
 }
 
+// address
 
+.form-group label {
+  margin: 10px 0 5px;
+  float: left;
+  font-weight: 400;
+  font-size: 17px;
+  text-align: left;
+  /* color: #333; */
+}
+.form-control:focus {
+  border: 1px solid #66afe9;
+  box-shadow:none;
+}
+.add-btn {
+  position: relative;
+  cursor: pointer;
+  padding: 0px 0;
+  border: none;
+  margin-top: 30px;
+  font-family: 'ProximaNovaSemibold';
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+  color: #fff;
+  width: 284px;
+  height: 48px;
+  border-radius: 24px;
+  background: #006ee0;
+  -webkit-appearance: none;
+  box-shadow: 0px 3px 6px rgb(0 0 0 / 16%);
+}
+.form-control.bd-red {
+  border: 1px solid red;
+}
+
+  // contact page
+
+span.error {
+  color: red;
+  font-size: 11px;
+}
+
+.us-flage span {
+  position: absolute;
+  top: 282px;
+  font-size: 30px;
+  color: #797979;
+  left: 210px;
+  z-index: 9;
+}
+
+element.style {
+}
+.thankmoment {
+    font-size: 18px;
+    color: #066EE0;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+a {
+    text-decoration: none;
+    color: #333;
+}
+.thank_msg  #slider{
+  padding: 0px 15px 80px 15px;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.thank_msg {
+    text-align: center;
+    padding-bottom: 100px;
+}
+.thank_msg .MailSect {
+  text-align: center;
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+.thankmoment {
+  font-size: 18px;
+  color: #066EE0;
+  text-decoration: underline;
+  margin-top: 20px;
+}
+a.callnuber {
+  color: #000;
+}
+.thank_msg .TEXTPHONEDTL {
+  padding-bottom: 80px;
+}
+p.TEXTPHONEDTL.agents {
+  padding-bottom: 0px;
+}
+.thank_msg p {
+  padding-top: 20px;
+  font-family: "ProximaNovaRegular";
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #333;
+}
+.react-tel-input .form-control {
+  position: relative;
+  font-size: 14px;
+  letter-spacing: .01rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 48px;
+  margin-left: 0;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  border-radius: 5px;
+  line-height: 25px;
+  height: 35px;
+  width: 100%;
+  outline: none;
+}
 @media (min-width: 250px) {
 .header,
 .main-nav {
@@ -265,5 +387,19 @@ outline: none;
     justify-content: space-between;
 }
 
+}
+@media screen and (max-width: 980px){
+.mainpage, .container, .main_container {
+    width: 95% !important;
+}}
+@media only screen and (max-width: 767px ){
+  .step3 {
+    width:60% !important;
+  }
+}
+@media only screen and (max-width: 320px ){
+  .step3 {
+    width:100% !important;
+  }
 }
 `;

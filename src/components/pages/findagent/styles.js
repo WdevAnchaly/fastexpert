@@ -1,5 +1,6 @@
 import styled  from 'styled-components'
 export const Find = styled.article`
+
 .fastExpertbg{
     background-color: #0088e0;
     font-family: proximanovaregular,sans-serif;
@@ -217,7 +218,18 @@ ul {
       line-height: 25px;
       padding-top: 35px;
   }
-  
+  input.focusRed {
+    border-color: #e32121 !important;
+    background-color: #ffcece!important;
+}
+#add-agent .loc_symbool span {
+    position: absolute;
+    top: 102px;
+    font-size: 20px;
+    left: 40px;
+    color: #797979;
+    z-index: 9;
+}
   /* ================================= 
     Media Queries
   ==================================== */

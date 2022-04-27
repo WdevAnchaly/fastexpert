@@ -1,0 +1,16 @@
+export default const stockData = [
+  {
+      "url" : "/",
+      "metaTitle" : "abcdefgh",
+      "metaKey" : "fastExpert",
+      "metaDiscription" : "42 MiB (javascript) 1.06 MiB (asset) 28.2 KiB (runtime) [cached] 242 modules"
+
+    },
+    {
+        "url" : "/lead_type",
+        "metaTitle" : "abcdefghijklmnopqrstuvwxyz",
+        "metaKey" : "fastExpert",
+        "metaDiscription" : "42 MiB (javascript) 1.06 MiB (asset) 28.2 KiB (runtime) [cached] 242 modules"
+  
+    },
+];

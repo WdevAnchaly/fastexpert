@@ -1,11 +1,10 @@
 import {ADDRESS_SAVE} from '../constants/ActionTypes';
 const initialState ={
-      isConfirmatiom : false,
+    isConfirmatiom : false,
        useraddress :{ 
             markers :[],
        }
 }
-
 function addressSaveReducer(state = initialState,action){
   
     switch(action.type){
@@ -14,7 +13,6 @@ function addressSaveReducer(state = initialState,action){
            ...state,
            isConfirmatiom:true,
            useraddress:action.payload,
-        
          }
          default:
          return state

@@ -1,0 +1,59 @@
+
+@import '../node_modules//font-awesome/css/font-awesome.min.css';
+@import '../node_modules/bootstrap/dist//css//bootstrap.min.css';
+.modal-header {
+   border-bottom: 0 !important;
+}
+span.right_count {
+  font-weight: 700;
+  margin-right: 2px;
+}
+.w-32 {
+  width: 32% !important;
+}
+.spiner-height {
+  max-height: 1000px;
+  height: 400px;
+  padding-top: 140px;
+}
+.modal a{
+  text-decoration: none;
+}
+.modal a:hover{
+  text-decoration: underline;
+}
+.modal span.review{
+  font-size: 12px;
+}
+.featured-inner {
+  top: 0;
+  margin-top: -5px;
+  margin-left: -8px;
+}
+.pac-container {
+  z-index: 999999 !important;
+}
+.modal-dialog h5{
+  cursor: pointer;
+  font-weight: 400;
+}
+.modal-dialog h5:hover{
+  text-decoration: underline;
+}
+.popuplist .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+@media (min-width: 576px){
+.modal-dialog {
+  max-width: 100%  !important;
+  margin:0 auto !important;
+}
+}

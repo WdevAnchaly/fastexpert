@@ -1,100 +1,187 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { Component } from 'react'
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux'
+import Autocomplete from "react-google-autocomplete";
+import { connect } from "react-redux";
+import { addressSave } from "../../../actions/index"
 
+class SearchLocationInput extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            place: [],
+            routes: '',
+            neighborhood: '',
+            sublocality: '',
+            political: '',
+            city: '',
+            state: '',
+            postal_code: '',
+            country: '',
+            formatted_address: '',
+            lat: '',
+            lng: '',
+            shortState: '',
+            focus: false,
+            loder: false,
+        };
+    }
 
-function SearchLocationInput() {
-    const [query, setQuery] = useState("");
-    const [address, setAddress] = useState("");
-    const autoCompleteRef = useRef(null);
-    const dispatch = useDispatch();
+    onPlaceSelectedFun = ((place) => {
+        
+     //   console.log(this.stete);
+     this.setState({ loder: true });
 
+        this.setState({ place: place });
+        this.setState({ formatted_address: place.formatted_address });
+        let address_components = place.address_components;
+        var zipCode = '';
+        for (let z = 0; z < address_components.length; z++) {
+            if (address_components[z].types[0] === 'route') {
+                this.setState({ routes: address_components[z].long_name });
+            }
+            if (address_components[z].types[0] === 'neighborhood') {
+                this.setState({ neighborhood: address_components[z].long_name });
+            }
+            if (address_components[z].types[0] === 'sublocality_level_2') {
+                this.setState({ sublocality: address_components[z].long_name });
+            }
+            if (address_components[z].types[0] === 'sublocality_level_1') {
+                this.setState({ political: address_components[z].long_name });
+            }
+            if (address_components[z].types[0] === 'locality') {
+                this.setState({ city: address_components[z].long_name });
+            }
+            if (address_components[z].types[0] === 'administrative_area_level_1') {
+                this.setState({ state: address_components[z].long_name, shortState: address_components[z].short_name });
+            }
 
-    let autoComplete;
+            if (address_components[z].types[0] === 'postal_code') {
+                zipCode = address_components[z].types[0] === 'postal_code' ? address_components[z].long_name : "";
+                this.setState({ postal_code: address_components[z].long_name });
+                this.setState({ loder: false });
+            }
 
-    const loadScript = (url, callback) => {
-        let script = document.createElement("script");
-        script.type = "text/javascript";
-
-        if (script.readyState) {
-            script.onreadystatechange = function () {
-                if (script.readyState === "loaded" || script.readyState === "complete") {
-                    script.onreadystatechange = null;
-                    callback();
-                }
-            };
-        } else {
-            script.onload = () => callback();
+            if (address_components[z].types[0] === 'country') {
+                this.setState({ country: address_components[z].long_name });
+            }
         }
 
-        script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
-    };
+        let lng = place.geometry.location.lng();
+        let lat = place.geometry.location.lat();
+        this.setState({ lat: lat });
+        this.setState({ lng: lng });
 
-    function handleScriptLoad(updateQuery, autoCompleteRef) {
-        autoComplete = new window.google.maps.places.Autocomplete(
-            autoCompleteRef.current,
-            { types: ["(regions)"], componentRestrictions: { country: "us" } }
-        );
-        autoComplete.setFields(["address_components", "formatted_address"]);
-        autoComplete.addListener("place_changed", () =>
-            handlePlaceSelect(updateQuery)
-        );
+        console.log(this.state)
+        if (zipCode === '' || zipCode === 'undefined') {
+            
+            console.log(this.state)
+            var formdata = new FormData();
+            formdata.append("seller_state", this.state.shortState);
+            formdata.append("seller_city", this.state.city);
+            var requestOptions = {
+                method: 'POST',
+                body: formdata,
+            };
+
+
+            fetch("https://www.fastexpertdev.com/ads/findagent/check_zipcode.php", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    let newZip = result.split("~~~");
+                    let Zip = newZip[1];
+                    console.log(Zip)
+                    if (Zip !== "0" || Zip !== 'undefined' ) {
+                        this.setState({ postal_code: Zip });
+                        console.log(this.state);
+                       
+                    } else {
+                        this.setState({ postal_code: '' });
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+        console.log(this.state)
+
+        setTimeout(() => {
+            const user = this.state;
+            // console.log(user);
+            this.props.addressSave(user);
+            this.setState({ loder: false });
+        }, 1000);
+    })
+
+    focusInputBox = () => {
+    
+        this.setState({ focus: true });
+
     }
 
-    async function handlePlaceSelect(updateQuery) {
-        const addressObject = autoComplete.getPlace();
-        const query = addressObject.formatted_address;
-        updateQuery(query);
 
-        setAddress(addressObject);
-        console.log(addressObject);
-        console.log(address);
-    }
+    render() {
 
-
-    useEffect(() => {
-        loadScript(
-            'https://maps.googleapis.com/maps/api/js?key=AIzaSyDrUdD-r-T3kyHRJnsqgxSSGYiPqlprz24&libraries=places',
-            () => handleScriptLoad(setQuery, autoCompleteRef)
-        );
-
-    }, []);
-
-    // const handleSubmit = event => {
-    //     event.preventDefault();
-    //     dispatch(addBird(address))
-    //     setQuery('');
-    //   };
-
-    return (
-
-        <div className="tab-pane active" id="add-agent">
-            <div className="input-group">
-                <div className="group-s RadIOSeCtIOnIndexPageSGroPu">
-                    <h2>Search by ZIP Code</h2>
-                    {/* <form onSubmit={handleSubmit}> */}
-
-                        <div className="form-group">
+        //console.log(this.props.data);
+        return (
+            <div className="tab-pane active" id="add-agent">
+                <div className="input-group">
+                    <div className="group-s RadIOSeCtIOnIndexPageSGroPu">
+                        <h2>Search by ZIP Code</h2>
+                        <div className='loc_symbool'>
                             <span><img src={`${process.env.PUBLIC_URL}/assets/locator_1.png`} alt="Location" /></span>
-                            <input
-                                ref={autoCompleteRef}
-                                onChange={event => setQuery(event.target.value)}
-                                placeholder="Enter Zip Code"
-                                value={query}
-                            />
                         </div>
-                        <div className="input-group-btn _send-button">
-                            <Link to='/step'>
-                                <button type="submit" className="btn btn-primary pushSubmit" id="passzip" >
-                                    <span>Continue</span>
-                                </button></Link>
+                        <Autocomplete
+                            apiKey='AIzaSyDrUdD-r-T3kyHRJnsqgxSSGYiPqlprz24'
+                            style={{ width: "100%" }}
+                            onPlaceSelected={this.onPlaceSelectedFun}
+                            placeholder='Enter Zip Code'
+                            options={{
+                                types: ["(regions)"],
+                                componentRestrictions: { country: "us" },
+                            }}
+                            onChange={(e) => {
+                                // this.setState({ focus: false });
+                                if (e.target.value === "") {
+                                    const user = this.state;
+                                    this.props.addressSave(user);
+                                }
+                            }}
+                            className={this.state.focus ? "focusRed" : ""}
+                            defaultValue={this.props.data.useraddress.formatted_address ? this.props.data.useraddress.formatted_address : this.state.formatted_address}
+                        />
+                        {console.log(this.state)}
+                        <div className="input-group-btn _send-button" >
+
+
+                            {this.props.data.useraddress.postal_code ? (
+                                <Link to={this.state.loder ? "" : '/lead_type'} >
+                                    <button type="submit" className="btn btn-primary pushSubmit" id="passzip">
+                                        <span>{this.state.loder ? <div className="d-flex justify-content-center">
+                                            <div className="spinner-border text-secondary" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div> : 'Continue'}</span>
+                                    </button>
+                                </Link>
+                            ) : (
+                                <button type="submit" className="btn btn-primary pushSubmit " id="passzip" onClick={this.state.loder ?this.focusInputBox :`` }>
+                                    <span>{this.state.loder ? <div className="d-flex justify-content-center">
+                                        <div className="spinner-border text-secondary" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div> : 'Continue'}</span>
+                                </button>
+
+                            )}
                         </div>
-                    {/* </form> */}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        )
+    }
 }
-
-export default SearchLocationInput;
+const mapStateToProps = (state) => ({
+    data: state.combine
+})
+const mapDispatchToProps = {
+    addressSave
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SearchLocationInput);
